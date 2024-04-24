@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import {ref} from "vue";
-import TabComponent from "../../components/TabComponent.vue";
+import TabComponent from "../../components/Tab.vue";
 import {BASE_URL} from "../../utils/Constants.ts";
 
 
@@ -45,7 +45,6 @@ async function getBalance() {
   await fetch(url)
       .then(response => response.json())
       .then(data => {
-        console.log(data)
         monthBalanceList.value = data
       })
       .catch(error => {
@@ -57,11 +56,11 @@ async function getBalance() {
 
 <template>
   <v-container class="max-width">
-    <v-row>
-      <v-col cols="8" offset="2" class="text-center">
+    <v-row justify="center" class="text-center">
+      <v-col cols="12" sm="4" offset-sm="4" md="6" offset-md="3" lg="8" offset-lg="2">
         <h1>Balance</h1>
       </v-col>
-      <v-col cols="2">
+      <v-col cols="12" sm="4" md="3" lg="2">
         <v-btn @click="syncData">Sync</v-btn>
       </v-col>
     </v-row>
@@ -69,12 +68,12 @@ async function getBalance() {
       <v-window-item v-for="monthBalance in monthBalanceList" :key="monthBalance.month" :value="monthBalance.month">
         <v-container>
           <v-row justify="start">
-            <v-col cols="12">
-              <v-card class="" elevation="0">
+            <v-col>
+              <v-card elevation="0">
                 <v-card-title>General Balance</v-card-title>
                 <v-card-subtitle class="bg-green-darken-2 pa-1 ma-2 rounded-xl">
                   <v-row align="center" justify="center">
-                    <v-col>Expanses:</v-col>
+                    <v-col>Income:</v-col>
                     <v-col>{{ currencyFormat(0) }}</v-col>
                   </v-row>
                 </v-card-subtitle>
@@ -86,16 +85,16 @@ async function getBalance() {
                 </v-card-subtitle>
                 <v-card-subtitle class="pa-1 bg-no-opacity font-weight-bold ma-2">
                   <v-row align="center" justify="center">
-                    <v-col>Expanses:</v-col>
+                    <v-col>Total:</v-col>
                     <v-col>{{ currencyFormat(0) }}</v-col>
                   </v-row>
                 </v-card-subtitle>
               </v-card>
             </v-col>
           </v-row>
-          <v-row>
-            <v-col cols="4" class="card-max-width" v-for="balance in monthBalance.balances" :key="balance.description">
-              <v-card class="rounded-xl">
+          <v-row  justify="center" justify-lg="start" >
+            <v-col cols="12" sm="6" md="6" lg="4" class="card-width" v-for="balance in monthBalance.balances" :key="balance.description">
+              <v-card class="rounded-xl w-100" >
                 <v-card-title class="bg-blue-darken-3">{{ balance.description }}</v-card-title>
                 <v-card-subtitle class="bg-blue-accent-1 pa-1"> {{ currencyFormat(balance.limitValue) }}
                   ({{ balance.percentage }}%)
@@ -130,8 +129,9 @@ async function getBalance() {
 
 <style scoped>
 
-.card-max-width {
+.card-width {
   max-width: 400px;
+  min-width: 350px;
 }
 
 .card-height {

@@ -3,6 +3,7 @@ import {createRouter, createWebHistory} from "vue-router";
 import Home from "../views/home/Home.vue";
 import Entries from "../views/entries/Entries.vue";
 import Limits from "../views/limits/Limits.vue";
+import Categories from "../views/categories/Categories.vue";
 
 export const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,6 +22,11 @@ export const router = createRouter({
             path: '/limits',
             component: Limits,
             name: 'Limits'
+        },
+        {
+            path: '/categories',
+            component: Categories,
+            name: 'Categories'
         },
     ]
 

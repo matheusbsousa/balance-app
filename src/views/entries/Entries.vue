@@ -1,11 +1,13 @@
 <script setup lang="ts">
 
-import TabComponent from "../../components/TabComponent.vue";
+import TabComponent from "../../components/Tab.vue";
 import {BASE_URL} from "../../utils/Constants.ts";
 import {ref, watch} from "vue";
 import {required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import CurrencyInput from "../../components/CurrencyInput.vue";
+import EntryGroup from "../../components/entry/EntryGroup.vue";
+import {currencyFormat} from "../../utils/GlobalFunction.ts";
 
 type Form = {
   id: number | null,
@@ -76,10 +78,6 @@ function updateMonth(newMonth: number) {
   month.value = newMonth
 }
 
-function currencyFormat(value: number) {
-  return value.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
-}
-
 async function getMonthEntries() {
   let url = new URL(BASE_URL + '/month-entries')
   url.searchParams.append('year', year.value.toString())
@@ -103,7 +101,6 @@ function editEntry(entry: Entry) {
   form.value.id = entry.id!!
   form.value.isIgnored = entry.isIgnored
   entryToEdit.value = entry.id
-
   dialogShow.value = true
 }
 
@@ -112,8 +109,6 @@ async function updateEntry() {
   await v$.value.$validate()
 
   if (v$.value.$invalid) {
-    console.log('invalid')
-    console.log(form.value)
     return
   }
 
@@ -141,8 +136,6 @@ async function createEntry() {
   await v$.value.$validate()
 
   if (v$.value.$invalid) {
-    console.log('invalid')
-    console.log(form.value)
     return
   }
 
@@ -196,29 +189,25 @@ function newEntry() {
   dialogShow.value = true
 }
 
-function formatDate(date: Date) {
-  return new Date(date).toLocaleDateString('pt-BR', {year: 'numeric', month: '2-digit', day: '2-digit'})
-}
 
 function sortList(categorizedEntries: CategorizedEntries[]) {
   return categorizedEntries.sort((a, b) => a.category.localeCompare(b.category))
 }
 
 function openDeleteEntryDialog(entry: Entry) {
-  console.log(entry)
   deleteEntryDialog.value = true
   entryIdToDelete.value = entry.id
   entryDescriptionToDelete.value = entry.description
 }
 
-function onExpand(){
+function onExpand() {
   categoryValue.value = ''
   filteredCategoryList.value = categoryList.value!!
 }
 
 function searchCategory() {
 
-  if(categoryValue.value!!.length == 0){
+  if (categoryValue.value!!.length == 0) {
     filteredCategoryList.value = categoryList.value!!
     return
   }
@@ -231,12 +220,11 @@ function searchCategory() {
 
 <template>
   <v-container class="max-width">
-
     <v-row justify="center" class="text-center">
-      <v-col cols="8" offset="2">
+      <v-col cols="12" sm="4" offset-sm="4" md="6" offset-md="3" lg="8" offset-lg="2">
         <h1>Entries</h1>
       </v-col>
-      <v-col cols="2">
+      <v-col cols="12" sm="4" md="3" lg="2">
         <v-btn @click="newEntry">Add new entry</v-btn>
       </v-col>
     </v-row>
@@ -247,75 +235,21 @@ function searchCategory() {
           <v-expansion-panel v-for="categorizedEntries in sortList(monthEntries.categorizedEntries)"
                              :key="categorizedEntries.category"
                              elevation="2"
-                             class="pa-2">
-            <v-expansion-panel-title class="rounded-xl bg-grey text-center pa-0 " hide-actions>
-              <span class="w-100 text-h5">{{ categorizedEntries.category }}</span>
+                             class="mt-2 mb-2">
+            <v-expansion-panel-title  class="rounded-xl bg-grey justify-center pa-0 " hide-actions>
+              <span class="text-h5">{{ categorizedEntries.category }}</span>
             </v-expansion-panel-title>
             <v-expansion-panel-text>
-              <v-row class="total-border ma-0 rounded-xl text-center">
-                <v-col cols="6" class="v-col-sm-5 font-weight-bold ">
-                  Description
-                </v-col>
-                <v-col cols="3" class="font-weight-bold ">
-                  Value
-                </v-col>
-                <v-col cols="2" class="font-weight-bold ">
-                  Date
-                </v-col>
-                <v-col cols="1" class="v-col-sm-2 font-weight-bold ">
-                  Actions
-                </v-col>
-              </v-row>
-              <v-row v-if="categorizedEntries.entries?.filter(entry => entry.value > 0).length > 0" class="bg-red-lighten-3 rounded-xl">
-                <v-col>
-                  Expenses
-                </v-col>
-              </v-row>
-              <v-row v-for="item in categorizedEntries.entries?.filter(entry => entry.value > 0)" :key="item.id" align="center" class="text-center">
-                <v-col class="pa-0 ma-2">
-                  <v-row>
-                    <v-col cols="6" class="v-col-sm-5">
-                      {{ item.description }}
-                    </v-col>
-                    <v-col cols="3">
-                      {{ currencyFormat(item.value) }}
-                    </v-col>
-                    <v-col cols="2">
-                      {{ formatDate(item.date) }}
-                    </v-col>
-                    <v-col cols="1" class="v-col-sm-2 d-flex align-center ga-3">
-                      <v-icon @click="editEntry(item)" color="grey" icon="fa:fas fa-pen"></v-icon>
-                      <v-icon @click="openDeleteEntryDialog(item)" color="red" size="35"
-                              icon="fa:fas fa-xmark"></v-icon>
-                    </v-col>
-                  </v-row>
-                </v-col>
-              </v-row>
-              <v-row v-if="categorizedEntries.entries?.filter(entry => entry.value < 0).length > 0" class="bg-green-accent-1 rounded-xl">
-                <v-col>
-                  Income
-                </v-col>
-              </v-row>
-              <v-row v-for="item in categorizedEntries.entries?.filter(entry => entry.value <= 0)" :key="item.id" align="center" class="text-center">
-                <v-col class="pa-0 ma-2">
-                  <v-row>
-                    <v-col cols="6" class="v-col-sm-5">
-                      {{ item.description }}
-                    </v-col>
-                    <v-col cols="3">
-                      {{ currencyFormat(item.value) }}
-                    </v-col>
-                    <v-col cols="2">
-                      {{ formatDate(item.date) }}
-                    </v-col>
-                    <v-col cols="1" class="v-col-sm-2 d-flex align-center ga-3">
-                      <v-icon @click="editEntry(item)" color="grey" icon="fa:fas fa-pen"></v-icon>
-                      <v-icon @click="openDeleteEntryDialog(item)" color="red" size="35"
-                              icon="fa:fas fa-xmark"></v-icon>
-                    </v-col>
-                  </v-row>
-                </v-col>
-              </v-row>
+              <EntryGroup v-for="entryGroup in [
+                  {type: 'Expenses', entries: categorizedEntries.entries.filter(entry => entry.value > 0) },
+                  {type: 'Income', entries: categorizedEntries.entries.filter(entry => entry.value < 0)}
+                  ]"
+                          :entries="entryGroup.entries"
+                          :open-delete-entry-dialog="openDeleteEntryDialog"
+                          :edit-entry="editEntry"
+                          :type="entryGroup.type"
+              >
+              </EntryGroup>
               <v-row class="total-border ma-1 rounded-xl text-center">
                 <v-col class="font-weight-bold">
                   Total
@@ -330,7 +264,7 @@ function searchCategory() {
       </v-window-item>
     </TabComponent>
   </v-container>
-  <v-dialog class="w-50" v-model="dialogShow" persistent no-click-animation>
+  <v-dialog max-width="800" v-model="dialogShow" persistent no-click-animation>
     <v-card>
       <v-card-title v-if="form.id!!" class="text-center">
         Update Entry
@@ -410,4 +344,8 @@ function searchCategory() {
 </template>
 
 <style scoped>
+.v-expansion-panel-text__wrapper{
+  padding: 0 !important;
+
+}
 </style>

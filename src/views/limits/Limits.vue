@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import TabComponent from "../../components/TabComponent.vue";
+import TabComponent from "../../components/Tab.vue";
 import {ref} from "vue";
 import {between, required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
@@ -122,7 +122,6 @@ async function createLimit() {
   await v$.value.$validate()
 
   if (v$.value.$invalid) {
-    console.log('Invalid form')
     return
   }
 
@@ -159,7 +158,6 @@ async function updateLimit() {
   await v$.value.$validate()
 
   if (v$.value.$invalid) {
-    console.log('Invalid form')
     return
   }
 
