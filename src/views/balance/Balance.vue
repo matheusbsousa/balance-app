@@ -96,12 +96,12 @@ async function getBalance() {
             <v-col cols="12" sm="6" md="6" lg="4" class="card-width" v-for="balance in monthBalance.balances" :key="balance.description">
               <v-card class="rounded-xl w-100" >
                 <v-card-title class="bg-blue-darken-3">{{ balance.description }}</v-card-title>
-                <v-card-subtitle class="bg-blue-accent-1 pa-1"> {{ currencyFormat(balance.limitValue) }}
+                <v-card-subtitle class="bg-blue-accent-1 pa-1"> {{ currencyFormat(balance.limitValue * -1) }}
                   ({{ balance.percentage }}%)
                 </v-card-subtitle>
                 <v-card-subtitle
-                    :class="balance.limitValue - balance.total > 0 ? 'bg-green-darken-2' : 'bg-red-darken-3'"
-                    class="pa-1"> {{ currencyFormat(balance.limitValue - balance.total) }}
+                    :class="(balance.limitValue * -1) - balance.total > 0 ? 'bg-green-darken-2' : 'bg-red-darken-3'"
+                    class="pa-1"> {{ currencyFormat((balance.limitValue * -1) - balance.total) }}
                 </v-card-subtitle>
                 <v-card-text class="card-height overflow-auto">
                   <v-row v-for="category in balance.categories">

@@ -236,13 +236,13 @@ function searchCategory() {
                              :key="categorizedEntries.category"
                              elevation="2"
                              class="mt-2 mb-2">
-            <v-expansion-panel-title  class="rounded-xl bg-grey justify-center pa-0 " hide-actions>
+            <v-expansion-panel-title  :class="categorizedEntries.colorHex ? 'bg-grey' : 'bg-grey'" class="rounded-xl justify-center pa-0 " hide-actions>
               <span class="text-h5">{{ categorizedEntries.category }}</span>
             </v-expansion-panel-title>
             <v-expansion-panel-text>
               <EntryGroup v-for="entryGroup in [
                   {type: 'Expenses', entries: categorizedEntries.entries.filter(entry => entry.value > 0) },
-                  {type: 'Income', entries: categorizedEntries.entries.filter(entry => entry.value < 0)}
+                  {type: 'Income', entries: categorizedEntries.entries.filter(entry => entry.value <= 0)}
                   ]"
                           :entries="entryGroup.entries"
                           :open-delete-entry-dialog="openDeleteEntryDialog"

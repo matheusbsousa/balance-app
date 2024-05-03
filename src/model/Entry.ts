@@ -9,6 +9,7 @@ class CategorizedEntries{
     category: string
     entries: Entry[]
     total: number
+    colorHex: string
 }
 
 class Entry {

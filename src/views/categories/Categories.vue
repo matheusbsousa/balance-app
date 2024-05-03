@@ -6,6 +6,7 @@ import {useDisplay} from "vuetify";
 import {required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import {loadConfigFromFile} from "vite";
+import {ColorPicker} from "vue3-colorpicker";
 
 const categories = ref<Category[]>([])
 const display = useDisplay()
@@ -18,13 +19,15 @@ const dialogErrorMessage = ref<string>()
 type Form = {
   id: number | null,
   description: string,
-  values: string[]
+  values: string[],
+  colorHex: string | null
 }
 
 const form = ref<Form>({
   id: null,
   description: '',
-  values: []
+  values: [],
+  colorHex: '#a2a2a2'
 })
 
 const rules = {
@@ -61,8 +64,9 @@ async function saveCategory() {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        "name": form.value.description,
-        "values": form.value.values
+        name: form.value.description,
+        values: form.value.values,
+        colorHex: form.value.colorHex
       })
     })
 
@@ -92,7 +96,8 @@ async function updateCategory() {
     },
     body: JSON.stringify({
       name: form.value.description,
-      values: form.value.values
+      values: form.value.values,
+      colorHex: form.value.colorHex
     })
   })
       .then(() => {
@@ -128,11 +133,13 @@ function openCategoryDialog(category: Category) {
   form.value.values = []
   form.value.description = ''
   form.value.id = null
+  form.value.colorHex = '#a2a2a2'
 
   if (category.id) {
     form.value.values = category.values
     form.value.description = category.name
     form.value.id = category.id
+    form.value.colorHex = category.colorHex
   }
   categoryDialogShow.value = true
 }
@@ -150,18 +157,21 @@ function openCategoryDialog(category: Category) {
       </v-col>
     </v-row>
     <v-row class="font-weight-bold">
-      <v-col cols="3">
+      <v-col cols="2">
         Description
       </v-col>
-      <v-col cols="7" class="overflow-hidden">
+      <v-col cols="7" class="text-center overflow-hidden">
         Values
+      </v-col>
+      <v-col cols="1">
+        Color
       </v-col>
       <v-col cols="2" class="text-center">
         Actions
       </v-col>
     </v-row>
     <v-row v-for="category in categories" justify="center" align="center">
-      <v-col cols="3">
+      <v-col cols="2">
         {{ category.name }}
       </v-col>
       <v-col cols="7" class="overflow-hidden">
@@ -170,11 +180,13 @@ function openCategoryDialog(category: Category) {
             {{ value }}
           </v-chip>
           <span v-if="category.values.indexOf(value) === 5" class="ml-4 text-grey-darken-1">
-            +{{ category.values.length - 6 }}
+            +{{ category.values.length - 5 }}
           </span>
         </div>
       </v-col>
-
+      <v-col cols="1">
+        Color
+      </v-col>
       <v-col cols="2" class="text-center">
         <div v-if="display.mdAndUp.value" class="d-flex justify-center align-center ga-5">
           <v-icon @click="openCategoryDialog(category)" color="grey" icon="fa:fas fa-pen"></v-icon>
@@ -210,7 +222,7 @@ function openCategoryDialog(category: Category) {
       </v-col>
     </v-row>
   </v-container>
-  <v-dialog max-width="800" v-model="categoryDialogShow" no-click-animation>
+  <v-dialog max-width="800" v-model="categoryDialogShow" persistent no-click-animation>
     <v-card>
       <v-card-title v-if="form.id!!" class="text-center">
         Update Category
@@ -218,6 +230,7 @@ function openCategoryDialog(category: Category) {
       <v-card-title v-else class="text-center">
         Add New Category
       </v-card-title>
+      {{ form}}
       <v-card-text class="">
         <v-sheet v-if="dialogErrorMessage" class="text-red ma-1 pa-4" rounded elevation="1" border>
           <span class="font-weight-bold">Error: </span>{{ dialogErrorMessage }}
@@ -240,6 +253,10 @@ function openCategoryDialog(category: Category) {
             @blur="v$.values.$touch"
             :error-messages="v$.values.$errors.map(e => e.$message).join(' - ')"
         ></v-combobox>
+        <v-label class="mr-2">
+          Color:
+        </v-label>
+        <color-picker shape="circle" format="hex" v-model:pure-color="form.colorHex" />
       </v-card-text>
       <v-card-actions class="justify-center ga-5">
         <v-btn color="red" @click="categoryDialogShow = false">Cancel</v-btn>
