@@ -26,6 +26,7 @@ watch(
       v-model="formattedValue"
       ref="inputRef"
       :label="props.label"
+      hide-details="true"
   ></v-text-field>
 </template>
 

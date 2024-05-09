@@ -25,19 +25,7 @@ function updateMonth(newMonth: number) {
   month.value = newMonth
 }
 
-async function syncData() {
-  try {
-    await fetch(BASE_URL + '/sync-data', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    await getBalance()
-  } catch (error) {
-    console.error(error);
-  }
-}
+
 
 async function getBalance() {
   let url = new URL(BASE_URL + '/balances')
@@ -57,11 +45,8 @@ async function getBalance() {
 <template>
   <v-container class="max-width">
     <v-row justify="center" class="text-center">
-      <v-col cols="12" sm="4" offset-sm="4" md="6" offset-md="3" lg="8" offset-lg="2">
+      <v-col>
         <h1>Balance</h1>
-      </v-col>
-      <v-col cols="12" sm="4" md="3" lg="2">
-        <v-btn @click="syncData">Sync</v-btn>
       </v-col>
     </v-row>
     <TabComponent :update-year="updateYear" :update-month="updateMonth">
@@ -92,9 +77,10 @@ async function getBalance() {
               </v-card>
             </v-col>
           </v-row>
-          <v-row  justify="center" justify-lg="start" >
-            <v-col cols="12" sm="6" md="6" lg="4" class="card-width" v-for="balance in monthBalance.balances" :key="balance.description">
-              <v-card class="rounded-xl w-100" >
+          <v-row justify="center" justify-lg="start">
+            <v-col cols="12" sm="6" md="6" lg="4" class="card-width" v-for="balance in monthBalance.balances"
+                   :key="balance.description">
+              <v-card class="rounded-xl w-100">
                 <v-card-title class="bg-blue-darken-3">{{ balance.description }}</v-card-title>
                 <v-card-subtitle class="bg-blue-accent-1 pa-1"> {{ currencyFormat(balance.limitValue * -1) }}
                   ({{ balance.percentage }}%)
@@ -104,10 +90,19 @@ async function getBalance() {
                     class="pa-1"> {{ currencyFormat((balance.limitValue * -1) - balance.total) }}
                 </v-card-subtitle>
                 <v-card-text class="card-height overflow-auto">
+                  <v-row class="font-weight-bold">
+                    <v-col class="pa-1">Category</v-col>
+                    <v-col class="pa-1">Limit</v-col>
+                    <v-col class="pa-1">Spent</v-col>
+                  </v-row>
                   <v-row v-for="category in balance.categories">
                     <v-col class="pa-1">{{ category.description }}</v-col>
                     <v-divider vertical></v-divider>
-                    <v-col class="pa-1">{{ currencyFormat(category.value) }}</v-col>
+                    <v-col class="pa-1">{{ currencyFormat(category.limit) }}</v-col>
+                    <v-divider vertical></v-divider>
+                    <v-col class="pa-1" :class="category.limit !== 0.0 && category.value > category.limit ? 'text-red-darken-3' : ''">
+                      {{ currencyFormat(category.value) }}
+                    </v-col>
                   </v-row>
                 </v-card-text>
                 <v-card-text>

@@ -5,7 +5,6 @@ import {BASE_URL} from "../../utils/Constants.ts";
 import {useDisplay} from "vuetify";
 import {required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
-import {loadConfigFromFile} from "vite";
 import {ColorPicker} from "vue3-colorpicker";
 
 const categories = ref<Category[]>([])
@@ -35,7 +34,8 @@ const rules = {
   values: {required},
 }
 
-let v$ = useVuelidate(rules, form)
+let formV$ = useVuelidate(rules, form)
+
 
 getCategories()
 
@@ -52,8 +52,8 @@ async function getCategories() {
 }
 
 async function saveCategory() {
-  if (v$.value.$invalid) {
-    v$.value.$touch()
+  if (formV$.value.$invalid) {
+    formV$.value.$touch()
     return
   }
   try {
@@ -85,8 +85,8 @@ async function saveCategory() {
 }
 
 async function updateCategory() {
-  if (v$.value.$invalid) {
-    v$.value.$touch()
+  if (formV$.value.$invalid) {
+    formV$.value.$touch()
     return
   }
   await fetch(BASE_URL + '/categories/' + form.value.id, {
@@ -109,6 +109,8 @@ async function updateCategory() {
       });
 }
 
+
+
 function openDeleteCategoryDialog(category: Category) {
   categoryDescriptionToDelete.value = category.name
   categoryIdToDelete.value = category.id
@@ -129,7 +131,7 @@ function deleteCategory() {
 }
 
 function openCategoryDialog(category: Category) {
-  v$.value.$reset()
+  formV$.value.$reset()
   form.value.values = []
   form.value.description = ''
   form.value.id = null
@@ -230,7 +232,6 @@ function openCategoryDialog(category: Category) {
       <v-card-title v-else class="text-center">
         Add New Category
       </v-card-title>
-      {{ form}}
       <v-card-text class="">
         <v-sheet v-if="dialogErrorMessage" class="text-red ma-1 pa-4" rounded elevation="1" border>
           <span class="font-weight-bold">Error: </span>{{ dialogErrorMessage }}
@@ -239,9 +240,9 @@ function openCategoryDialog(category: Category) {
       <v-card-text>
         <v-text-field label="Description"
                       v-model="form.description"
-                      @input="v$.description.$touch"
-                      @blur="v$.description.$touch"
-                      :error-messages="v$.description.$errors.map(e => e.$message).join(' - ')"></v-text-field>
+                      @input="formV$.description.$touch"
+                      @blur="formV$.description.$touch"
+                      :error-messages="formV$.description.$errors.map(e => e.$message).join(' - ')"></v-text-field>
 
         <v-combobox
             v-model="form.values"
@@ -249,14 +250,14 @@ function openCategoryDialog(category: Category) {
             multiple
             chips
             closable-chips
-            @input="v$.values.$touch"
-            @blur="v$.values.$touch"
-            :error-messages="v$.values.$errors.map(e => e.$message).join(' - ')"
+            @input="formV$.values.$touch"
+            @blur="formV$.values.$touch"
+            :error-messages="formV$.values.$errors.map(e => e.$message).join(' - ')"
         ></v-combobox>
         <v-label class="mr-2">
           Color:
         </v-label>
-        <color-picker shape="circle" format="hex" v-model:pure-color="form.colorHex" />
+        <color-picker shape="circle" format="hex" v-model:pure-color="form.colorHex"/>
       </v-card-text>
       <v-card-actions class="justify-center ga-5">
         <v-btn color="red" @click="categoryDialogShow = false">Cancel</v-btn>
@@ -266,6 +267,7 @@ function openCategoryDialog(category: Category) {
       </v-card-actions>
     </v-card>
   </v-dialog>
+
   <v-dialog v-model="deleteCategoryDialogShow" class="w-50" persistent no-click-animation>
     <v-card>
       <v-card-title class="text-center">

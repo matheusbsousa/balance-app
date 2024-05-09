@@ -14,6 +14,12 @@ class Limit {
     month: number
     year: number
     categoryIds?: number[]
-    categories?: Category[]
+    limitCategories?: LimitCategory[]
 }
 
+class LimitCategory{
+    id: number
+    categoryId: number
+    description: string
+    limit: number
+}

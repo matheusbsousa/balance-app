@@ -5,11 +5,12 @@ import {ref} from "vue";
 import {between, required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
 import {BASE_URL} from "../../utils/Constants.ts";
+import CurrencyInput from "../../components/CurrencyInput.vue";
 
 
 type Form = {
   id: number | null,
-  description: '',
+  description: string,
   percentage: number | null,
   categories: number[] | null,
   monthLimitId: number | null
@@ -31,14 +32,25 @@ const rules = {
 
 let v$ = useVuelidate(rules, form)
 
+type CategoryLimit = {
+  id: number
+  description: string,
+  limit: number,
+}
+
+
 const year = ref<number>(new Date().getFullYear())
 const month = ref<number>(new Date().getMonth() + 1)
 const categoryList = ref<Category[]>()
 const monthLimitList = ref<MonthLimit[]>()
 const dialogShow = ref<boolean>(false)
+const categoryLimitDialogShow = ref(false)
+const categoryLimitError = ref()
 const deleteLimitDialog = ref<boolean>(false)
 const limitIdToDelete = ref<number>()
 const limitDescriptionToDelete = ref<string>()
+const categoryLimits = ref<CategoryLimit[]>()
+const limitId = ref<number>()
 
 getCategories()
 getMonthLimits()
@@ -62,6 +74,7 @@ async function getMonthLimits() {
       .then(response => response.json())
       .then(data => {
         monthLimitList.value = data
+        console.log(data)
       })
       .catch(error => {
         console.error('Error:', error);
@@ -94,13 +107,13 @@ function addLimit() {
   dialogShow.value = true
 }
 
-function editLimit(limit: any) {
+function editLimit(limit: Limit) {
   form.value = {
-    id: limit.id,
+    id: limit.id!!,
     description: limit.description,
     percentage: limit.percentage,
-    categories: limit.categories.map((category: Category) => category.id),
-    monthLimitId: limit.monthLimitId
+    categories: limit.limitCategories!!.map(category => category.categoryId),
+    monthLimitId: limit.monthLimitId!!
   }
   dialogShow.value = true
 }
@@ -196,6 +209,46 @@ function onCloseDialog() {
   v$.value.$reset()
 }
 
+function openCategoryLimitDialog(limit: Limit) {
+
+  categoryLimits.value = limit.limitCategories!!.map(limitCategory => ({
+    id: limitCategory.id,
+    limit: limitCategory.limit,
+    description: limitCategory.description,
+  }));
+
+  limitId.value = limit.id!!
+
+  categoryLimitError.value = null
+  categoryLimitDialogShow.value = true
+}
+
+async function updateCategoryLimits() {
+
+  categoryLimitError.value = null
+
+  try {
+    const response = await fetch(BASE_URL + `/limits/${limitId.value}/categories`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(categoryLimits.value)
+    })
+
+    if (response.ok) {
+      categoryLimitDialogShow.value = false
+      getMonthLimits()
+    } else {
+      const error = await response.json()
+      categoryLimitError.value = error.message
+    }
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
 
 </script>
 
@@ -229,16 +282,18 @@ function onCloseDialog() {
           <v-col cols="2">{{ limit.description }}</v-col>
           <v-col cols="2">{{ limit.percentage }}%</v-col>
           <v-col cols="6" class="d-flex align-center ga-3">
-            <div v-for="category in limit.categories">
-              <v-chip v-if="limit.categories!!.indexOf(category) < 3">
-                {{ category.name }}
+            <div v-for="category in limit.limitCategories">
+              <v-chip v-if="limit.limitCategories!!.indexOf(category) < 3">
+                {{ category.description }}
               </v-chip>
-              <span v-if="limit.categories!!.indexOf(category) === 3"
-                    class="text-grey"> {{ limit.categories!!.length - 3 }}+</span>
+              <span v-if="limit.limitCategories!!.indexOf(category) === 3"
+                    class="text-grey"> {{ limit.limitCategories!!.length - 3 }}+</span>
             </div>
           </v-col>
           <v-col cols="2" class="d-flex justify-center align-center ga-4">
             <v-icon @click="editLimit(limit)" color="grey" icon="fa:fas fa-pen"></v-icon>
+            <v-icon @click="openCategoryLimitDialog(limit)" color="grey-darken-3"
+                    icon="fa:fas fa-chart-simple"></v-icon>
             <v-icon @click="openDeleteLimitDialog(limit)" color="red" size="35" icon="fa:fas fa-xmark"></v-icon>
           </v-col>
         </v-row>
@@ -268,7 +323,7 @@ function onCloseDialog() {
           </v-col>
           <v-col cols="6">
             <v-text-field type="number"
-                v-model="form.percentage"
+                          v-model="form.percentage"
                           @input="v$.percentage.$touch"
                           @blur="v$.percentage.$touch"
                           :error-messages="v$.percentage.$errors.map(e => e.$message).join(' - ')"
@@ -289,6 +344,40 @@ function onCloseDialog() {
         <v-divider vertical></v-divider>
         <v-btn v-if="form.id!!" color="blue" @click="updateLimit">Update</v-btn>
         <v-btn v-else color="blue" @click="createLimit">Save</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+  <v-dialog max-width="500" v-model="categoryLimitDialogShow" persistent no-click-animation>
+    <v-card>
+      <v-card-title class="text-center">
+        Category Limits
+      </v-card-title>
+      <v-card-subtitle v-if="categoryLimitError" class="text-red text-h6 font-weight-bold">
+        {{ categoryLimitError }}
+      </v-card-subtitle>
+      <v-card-text>
+        <v-list>
+          <v-list-item class="total-border rounded-xl mb-3" v-for="categoryLimit in categoryLimits"
+                       :key="categoryLimit.id">
+            <v-container>
+              <v-row align="center">
+                <v-col class="pa-0">
+                  {{ categoryLimit.description }}
+                </v-col>
+                <v-col class="pa-0">
+                  <CurrencyInput v-model="categoryLimit.limit"
+                                 label="Limit (R$)"
+                  ></CurrencyInput>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-list-item>
+        </v-list>
+      </v-card-text>
+      <v-card-actions class="justify-center ga-5">
+        <v-btn color="red" @click="categoryLimitDialogShow = false">Cancel</v-btn>
+        <v-divider vertical></v-divider>
+        <v-btn color="blue" @click="updateCategoryLimits">Save</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -314,5 +403,7 @@ function onCloseDialog() {
 </template>
 
 <style scoped>
-
+.total-border {
+  border: 1px solid #a4a4a4;
+}
 </style>

@@ -1,9 +1,11 @@
 class CategoryBalance {
     description: string;
+    limit: number;
     value: number;
 
-    constructor(description: string, value: number) {
+    constructor(description: string, limit: number, value: number) {
         this.description = description;
+        this.limit = limit;
         this.value = value;
     }
 }
