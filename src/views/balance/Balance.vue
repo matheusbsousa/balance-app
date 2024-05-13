@@ -52,31 +52,31 @@ async function getBalance() {
     <TabComponent :update-year="updateYear" :update-month="updateMonth">
       <v-window-item v-for="monthBalance in monthBalanceList" :key="monthBalance.month" :value="monthBalance.month">
         <v-container>
-          <v-row justify="start">
-            <v-col>
-              <v-card elevation="0">
-                <v-card-title>General Balance</v-card-title>
-                <v-card-subtitle class="bg-green-darken-2 pa-1 ma-2 rounded-xl">
-                  <v-row align="center" justify="center">
-                    <v-col>Income:</v-col>
-                    <v-col>{{ currencyFormat(0) }}</v-col>
-                  </v-row>
-                </v-card-subtitle>
-                <v-card-subtitle class="bg-red-darken-2 pa-1 ma-2 rounded-xl">
-                  <v-row align="center" justify="center">
-                    <v-col>Expanses:</v-col>
-                    <v-col>{{ currencyFormat(0) }}</v-col>
-                  </v-row>
-                </v-card-subtitle>
-                <v-card-subtitle class="pa-1 bg-no-opacity font-weight-bold ma-2">
-                  <v-row align="center" justify="center">
-                    <v-col>Total:</v-col>
-                    <v-col>{{ currencyFormat(0) }}</v-col>
-                  </v-row>
-                </v-card-subtitle>
-              </v-card>
-            </v-col>
-          </v-row>
+<!--          <v-row justify="start">-->
+<!--            <v-col>-->
+<!--              <v-card elevation="0">-->
+<!--                <v-card-title>General Balance</v-card-title>-->
+<!--                <v-card-subtitle class="bg-green-darken-2 pa-1 ma-2 rounded-xl">-->
+<!--                  <v-row align="center" justify="center">-->
+<!--                    <v-col>Income:</v-col>-->
+<!--                    <v-col>{{ currencyFormat(0) }}</v-col>-->
+<!--                  </v-row>-->
+<!--                </v-card-subtitle>-->
+<!--                <v-card-subtitle class="bg-red-darken-2 pa-1 ma-2 rounded-xl">-->
+<!--                  <v-row align="center" justify="center">-->
+<!--                    <v-col>Expanses:</v-col>-->
+<!--                    <v-col>{{ currencyFormat(0) }}</v-col>-->
+<!--                  </v-row>-->
+<!--                </v-card-subtitle>-->
+<!--                <v-card-subtitle class="pa-1 bg-no-opacity font-weight-bold ma-2">-->
+<!--                  <v-row align="center" justify="center">-->
+<!--                    <v-col>Total:</v-col>-->
+<!--                    <v-col>{{ currencyFormat(0) }}</v-col>-->
+<!--                  </v-row>-->
+<!--                </v-card-subtitle>-->
+<!--              </v-card>-->
+<!--            </v-col>-->
+<!--          </v-row>-->
           <v-row justify="center" justify-lg="start">
             <v-col cols="12" sm="6" md="6" lg="4" class="card-width" v-for="balance in monthBalance.balances"
                    :key="balance.description">
