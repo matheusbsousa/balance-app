@@ -236,7 +236,8 @@ function searchCategory() {
                              :key="categorizedEntries.category"
                              elevation="2"
                              class="mt-2 mb-2">
-            <v-expansion-panel-title  :class="categorizedEntries.colorHex ? 'bg-grey' : 'bg-grey'" class="rounded-xl justify-center pa-0 " hide-actions>
+            <v-expansion-panel-title  :color="categorizedEntries.colorHex ? categorizedEntries.colorHex : '#a2a2a2' "  class="rounded-xl justify-center pa-0 " hide-actions>
+
               <span class="text-h5">{{ categorizedEntries.category }}</span>
             </v-expansion-panel-title>
             <v-expansion-panel-text>

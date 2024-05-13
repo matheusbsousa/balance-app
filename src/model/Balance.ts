@@ -15,13 +15,15 @@ class Balance {
     percentage: number;
     categories: CategoryBalance[];
     limitValue: number;
+    limitTotal: number;
     total: number;
 
-    constructor(description: string, percentage: number, categories: CategoryBalance[], limitValue: number, total: number) {
+    constructor(description: string, percentage: number, categories: CategoryBalance[], limitValue: number, limitTotal: number, total: number) {
         this.description = description;
         this.percentage = percentage;
         this.categories = categories;
         this.limitValue = limitValue;
+        this.limitTotal = limitTotal;
         this.total = total;
     }
 }

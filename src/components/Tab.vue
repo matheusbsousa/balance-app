@@ -49,17 +49,17 @@ watch(tabMonth, onMonthChange)
           {{ year }}
         </v-tab>
       </v-tabs>
+      <v-tabs  center-active v-model="tabMonth" align-tabs="center">
+        <v-tab v-for="tabMonth in MONTHS_NUMBER" :key="tabMonth" :value="tabMonth">
+          {{ MONTHS[tabMonth - 1] }}
+        </v-tab>
+      </v-tabs>
       <v-window  v-model="tabYear">
         <v-window-item v-for="year in YEARS" :key="year" :value="year">
-          <v-tabs  center-active v-model="tabMonth" align-tabs="center">
-            <v-tab v-for="tabMonth in MONTHS_NUMBER" :key="tabMonth" :value="tabMonth">
-              {{ MONTHS[tabMonth - 1] }}
-            </v-tab>
-          </v-tabs>
-          <v-window v-model="tabMonth">
-            <slot></slot>
-          </v-window>
         </v-window-item>
+      </v-window>
+      <v-window v-model="tabMonth">
+        <slot></slot>
       </v-window>
     </v-col>
   </v-row>

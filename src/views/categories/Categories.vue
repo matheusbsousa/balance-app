@@ -5,7 +5,6 @@ import {BASE_URL} from "../../utils/Constants.ts";
 import {useDisplay} from "vuetify";
 import {required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
-import {ColorPicker} from "vue3-colorpicker";
 
 const categories = ref<Category[]>([])
 const display = useDisplay()
@@ -14,6 +13,8 @@ const deleteCategoryDialogShow = ref(false)
 const categoryDescriptionToDelete = ref<string>()
 const categoryIdToDelete = ref<number>()
 const dialogErrorMessage = ref<string>()
+const dialogColorPicker = ref<boolean>()
+
 
 type Form = {
   id: number | null,
@@ -110,7 +111,6 @@ async function updateCategory() {
 }
 
 
-
 function openDeleteCategoryDialog(category: Category) {
   categoryDescriptionToDelete.value = category.name
   categoryIdToDelete.value = category.id
@@ -187,7 +187,7 @@ function openCategoryDialog(category: Category) {
         </div>
       </v-col>
       <v-col cols="1">
-        Color
+        <v-icon icon="fa:fas fa-circle" :color="category.colorHex"></v-icon>
       </v-col>
       <v-col cols="2" class="text-center">
         <div v-if="display.mdAndUp.value" class="d-flex justify-center align-center ga-5">
@@ -257,7 +257,7 @@ function openCategoryDialog(category: Category) {
         <v-label class="mr-2">
           Color:
         </v-label>
-        <color-picker shape="circle" format="hex" v-model:pure-color="form.colorHex"/>
+        <v-icon icon="fa:fas fa-circle" :color="form.colorHex!!" @click="dialogColorPicker = true"></v-icon>
       </v-card-text>
       <v-card-actions class="justify-center ga-5">
         <v-btn color="red" @click="categoryDialogShow = false">Cancel</v-btn>
@@ -267,7 +267,11 @@ function openCategoryDialog(category: Category) {
       </v-card-actions>
     </v-card>
   </v-dialog>
-
+  <v-dialog v-model="dialogColorPicker" opacity="0" width="300" no-click-animation>
+    <div>
+      <v-color-picker  v-model="form.colorHex"  width="300"/>
+    </div>
+  </v-dialog>
   <v-dialog v-model="deleteCategoryDialogShow" class="w-50" persistent no-click-animation>
     <v-card>
       <v-card-title class="text-center">

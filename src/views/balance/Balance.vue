@@ -108,6 +108,7 @@ async function getBalance() {
                 <v-card-text>
                   <v-row class="font-weight-bold">
                     <v-col>Total</v-col>
+                    <v-col>{{ currencyFormat(balance.limitTotal) }}</v-col>
                     <v-col>{{ currencyFormat(balance.total) }}</v-col>
                   </v-row>
                 </v-card-text>

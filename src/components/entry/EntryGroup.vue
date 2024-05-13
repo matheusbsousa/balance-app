@@ -2,6 +2,7 @@
 
 import {currencyFormat, formatDate} from "../../utils/GlobalFunction.ts";
 import {useDisplay} from "vuetify";
+import CurrencyInput from "../CurrencyInput.vue";
 
 interface EntryGroup {
   entries: Entry[],
@@ -89,6 +90,10 @@ const display = useDisplay()
           </v-col>
         </v-row>
       </v-col>
+    </v-row>
+    <v-row v-if="entries?.length > 0" class="text-grey-darken-1 font-weight-bold">
+      <v-col >Subtotal</v-col>
+      <v-col>{{currencyFormat(entries.map(entry => entry.value).reduce((a,b) => a + b))}}</v-col>
     </v-row>
   </v-container>
 </template>
