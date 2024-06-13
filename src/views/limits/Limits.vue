@@ -122,7 +122,7 @@ function deleteLimit() {
   fetch(BASE_URL + `/limits/${limitIdToDelete.value}`, {
     method: 'DELETE'
   })
-      .then(response => {
+      .then(() => {
         deleteLimitDialog.value = false
         getMonthLimits()
       }).catch(error => {
@@ -156,7 +156,7 @@ async function createLimit() {
     })
   })
       .then(response => response.json())
-      .then(data => {
+      .then(() => {
         getMonthLimits()
         onCloseDialog()
       })
@@ -189,7 +189,7 @@ async function updateLimit() {
     })
   })
       .then(response => response.json())
-      .then(data => {
+      .then(() => {
         getMonthLimits()
         onCloseDialog()
       })

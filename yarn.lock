@@ -7,6 +7,13 @@
   resolved "https://registry.npmjs.org/@babel/parser/-/parser-7.24.0.tgz"
   integrity sha512-QuP/FxEAzMSjXygs8v4N9dvdXzEHN4W1oF3PxuWAtPo08UdM17u89RDMgjLn/mlc56iM0HlLmVkO/wgR+rDgHg==
 
+"@duetds/date-picker@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@duetds/date-picker/-/date-picker-1.4.0.tgz#4bdbc15aa4b6307b8b156d8d9c5fdf67f6b6783b"
+  integrity sha512-jx4oSIrZAVsXYLyQGXbEmuo0gEXAqrNIGp3rG8L03XSxFFFca/bTpCj5v6yd48vVWOtAXD8y04S/+flOimra0A==
+  dependencies:
+    "@stencil/core" "^2.3.0"
+
 "@esbuild/aix-ppc64@0.19.12":
   version "0.19.12"
   resolved "https://registry.yarnpkg.com/@esbuild/aix-ppc64/-/aix-ppc64-0.19.12.tgz#d1bc06aedb6936b3b6d313bf809a5a40387d2b7f"
@@ -170,6 +177,42 @@
   resolved "https://registry.npmjs.org/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.4.15.tgz"
   integrity sha512-eF2rxCRulEKXHTRiDrDy6erMYWqNw4LPdQ8UQA4huuxaQsVeRPFl2oM8oDGxMFhJUWZf9McpLtJasDDZb/Bpeg==
 
+"@jspreadsheet/formula@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@jspreadsheet/formula/-/formula-2.0.2.tgz#e0529f275c086fd7d34179b50450a98aeb56fd58"
+  integrity sha512-PDQYf9REQA53I7tVYkvkeyQxrd5jcjUeHgItYnRpjN2QiIQwawSqBDtGGEVQTSboTG+JwgGCuhvOpj7FxeKwew==
+
+"@revolist/revogrid-column-date@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@revolist/revogrid-column-date/-/revogrid-column-date-2.0.0.tgz#f39667168d6e35d2fbf26a52b6b47238fa6d5408"
+  integrity sha512-UXGnlgluTg4YJ9gi+acVU75Stq+3kbtVZLFoh1DVteY3tjS0HBt1XfvUoL327ZclFq6O+uAaqJ7+YntPVsP9Fw==
+  dependencies:
+    "@duetds/date-picker" "^1.4.0"
+
+"@revolist/revogrid-column-numeral@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@revolist/revogrid-column-numeral/-/revogrid-column-numeral-1.0.2.tgz#794dcbe40d9a8d9b97ce151d5d2f184eb960bf40"
+  integrity sha512-f5Z1QfxlsdXf6l+Aocd5RewFOpnaPj5Sl+HHJEjeRPjQGZv6Bx/ibAdyA3gtRoiSAaQuTt3BwWyfRTQNJHwWwQ==
+  dependencies:
+    "@types/numeral" "0.0.28"
+    numeral "^2.0.6"
+
+"@revolist/revogrid@^4.7.0-next.4":
+  version "4.7.0-next.5"
+  resolved "https://registry.yarnpkg.com/@revolist/revogrid/-/revogrid-4.7.0-next.5.tgz#95d4772881a9b7a0204054dce46c91ed5048fb4b"
+  integrity sha512-lRFioTTHE7re1rRAq+R0HT+NA5f5oNfSknglQ+eGLOb2vjmOYEzQCKF2qRD54ienvKHOsgv9ZHeB1OWutyAmsg==
+  dependencies:
+    "@stencil/core" "^4.3.0"
+    lodash "^4.17.21"
+
+"@revolist/vue3-datagrid@^4.0.0-next.1":
+  version "4.0.0-next.1"
+  resolved "https://registry.yarnpkg.com/@revolist/vue3-datagrid/-/vue3-datagrid-4.0.0-next.1.tgz#eb19ab2fb4968d5a8ed8474fb2d995c0fcf31b54"
+  integrity sha512-XscGwIr9vjwjpxzoYmZIHSI4Vtyir6bwkxsCPrN+vAZ47YII10bt6qRqJdVOT2Q05a5M+nekFnN5r/W93ZFsbg==
+  dependencies:
+    "@revolist/revogrid" "^4.7.0-next.4"
+    "@stencil/core" "^4.11.0"
+
 "@rollup/rollup-android-arm-eabi@4.12.0":
   version "4.12.0"
   resolved "https://registry.yarnpkg.com/@rollup/rollup-android-arm-eabi/-/rollup-android-arm-eabi-4.12.0.tgz#38c3abd1955a3c21d492af6b1a1dca4bb1d894d6"
@@ -235,10 +278,25 @@
   resolved "https://registry.yarnpkg.com/@rollup/rollup-win32-x64-msvc/-/rollup-win32-x64-msvc-4.12.0.tgz#9ffdf9ed133a7464f4ae187eb9e1294413fab235"
   integrity sha512-ZYmr5mS2wd4Dew/JjT0Fqi2NPB/ZhZ2VvPp7SmvPZb4Y1CG/LRcS6tcRo2cYU7zLK5A7cdbhWnnWmUjoI4qapg==
 
+"@stencil/core@^2.3.0":
+  version "2.22.3"
+  resolved "https://registry.yarnpkg.com/@stencil/core/-/core-2.22.3.tgz#83987e20bba855c450f6d6780e3a20192603f13f"
+  integrity sha512-kmVA0M/HojwsfkeHsifvHVIYe4l5tin7J5+DLgtl8h6WWfiMClND5K3ifCXXI2ETDNKiEk21p6jql3Fx9o2rng==
+
+"@stencil/core@^4.11.0", "@stencil/core@^4.3.0":
+  version "4.18.3"
+  resolved "https://registry.yarnpkg.com/@stencil/core/-/core-4.18.3.tgz#8568ffe3db307ea36aaacf82813cfed9ae319388"
+  integrity sha512-8yoG5AFQYEPocVtuoc5kvRS0Hku0MoDWDUpADRaXPVHsOFLmxR16LJENj25ucCz5GEfeTGQ/tCE8JAypPmr/fQ==
+
 "@types/estree@1.0.5":
   version "1.0.5"
   resolved "https://registry.npmjs.org/@types/estree/-/estree-1.0.5.tgz"
   integrity sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==
+
+"@types/numeral@0.0.28":
+  version "0.0.28"
+  resolved "https://registry.yarnpkg.com/@types/numeral/-/numeral-0.0.28.tgz#e43928f0bda10b169b6f7ecf99e3ddf836b8ebe4"
+  integrity sha512-Sjsy10w6XFHDktJJdXzBJmoondAKW+LcGpRFH+9+zXEDj0cOH8BxJuZA9vUDSMAzU1YRJlsPKmZEEiTYDlICLw==
 
 "@vitejs/plugin-vue@^5.0.4":
   version "5.0.4"
@@ -468,6 +526,24 @@ he@^1.2.0:
   resolved "https://registry.npmjs.org/he/-/he-1.2.0.tgz"
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
 
+jspreadsheet@11:
+  version "11.2.1"
+  resolved "https://registry.yarnpkg.com/jspreadsheet/-/jspreadsheet-11.2.1.tgz#df66641f9c860c152d7568b5b6b4902bfeb70deb"
+  integrity sha512-NfZfnmxFJLdcF+Z9FRwztL6Xqx2JPL02VkZ0PYw0i7hFFH8dFnzuD5bR9yU2+Sw617le9rkh/ufQttlt1f1GJw==
+  dependencies:
+    "@jspreadsheet/formula" "^2.0.2"
+    jsuites "^5.4.3"
+
+jsuites@^5.4.3:
+  version "5.4.3"
+  resolved "https://registry.yarnpkg.com/jsuites/-/jsuites-5.4.3.tgz#0077ee148083a0df6423b42d802d1e382f9a633e"
+  integrity sha512-tKeyQyvtlbAB9pHceRcZgUqWaWfZKNrU/V/6sj2DMxTtNSClRPAFjOQu2nOr4xF0BT78VbwDSl1F0jeuUT9IUw==
+
+lodash@^4.17.21:
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
+
 lru-cache@^6.0.0:
   version "6.0.0"
   resolved "https://registry.npmjs.org/lru-cache/-/lru-cache-6.0.0.tgz"
@@ -498,6 +574,11 @@ nanoid@^3.3.7:
   version "3.3.7"
   resolved "https://registry.npmjs.org/nanoid/-/nanoid-3.3.7.tgz"
   integrity sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==
+
+numeral@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/numeral/-/numeral-2.0.6.tgz#4ad080936d443c2561aed9f2197efffe25f4e506"
+  integrity sha512-qaKRmtYPZ5qdw4jWJD6bxEf1FJEqllJrwxCLIm0sQU/A7v2/czigzOb+C2uSiFsa9lBUzeH7M1oK+Q+OLxL3kA==
 
 path-browserify@^1.0.1:
   version "1.0.1"

@@ -1,8 +1,7 @@
 <script setup lang="ts">
 
-import {onMounted, ref, watch} from 'vue';
+import {ref, watch} from 'vue';
 import {MONTHS, MONTHS_NUMBER, YEARS} from "../utils/Constants.ts";
-import {useDisplay} from "vuetify";
 
 type TabProps = {
   updateYear?: Function
@@ -15,12 +14,12 @@ const tabMonth = ref<number>(getCurrentMonth())
 const tabYear = ref<number>(getCurrentYear())
 
 async function onYearChange() {
-  if(props.updateYear === undefined) return
+  if (props.updateYear === undefined) return
   props.updateYear!!(tabYear.value)
 }
 
 async function onMonthChange() {
-  if(props.updateMonth === undefined) return
+  if (props.updateMonth === undefined) return
   props.updateMonth(tabMonth.value)
 }
 
@@ -33,8 +32,6 @@ function getCurrentYear() {
   return new Date().getFullYear()
 }
 
-const { mobile } = useDisplay()
-
 watch(tabYear, onYearChange)
 watch(tabMonth, onMonthChange)
 
@@ -44,17 +41,17 @@ watch(tabMonth, onMonthChange)
 
   <v-row justify="center" class="text-center">
     <v-col>
-      <v-tabs  center-active v-model="tabYear" align-tabs="center">
-        <v-tab  v-for="year in YEARS" :key="year" :value="year">
+      <v-tabs center-active v-model="tabYear" align-tabs="center">
+        <v-tab v-for="year in YEARS" :key="year" :value="year">
           {{ year }}
         </v-tab>
       </v-tabs>
-      <v-tabs  center-active v-model="tabMonth" align-tabs="center">
+      <v-tabs center-active v-model="tabMonth" align-tabs="center">
         <v-tab v-for="tabMonth in MONTHS_NUMBER" :key="tabMonth" :value="tabMonth">
           {{ MONTHS[tabMonth - 1] }}
         </v-tab>
       </v-tabs>
-      <v-window  v-model="tabYear">
+      <v-window v-model="tabYear">
         <v-window-item v-for="year in YEARS" :key="year" :value="year">
         </v-window-item>
       </v-window>

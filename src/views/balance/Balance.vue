@@ -8,7 +8,6 @@ import {BASE_URL} from "../../utils/Constants.ts";
 const year = ref<number>(new Date().getFullYear())
 const month = ref<number>(new Date().getMonth() + 1)
 const monthBalanceList = ref<MonthBalance[]>()
-const panels = ref<string[]>([])
 
 getBalance()
 

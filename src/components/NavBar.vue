@@ -8,6 +8,7 @@ import {router} from "../config/Router.ts";
 const buttons = [
   {name: 'Home'},
   {name: 'Entries'},
+  {name: 'Spreadsheet'},
   {name: 'Limits'},
   {name: 'Categories'},
 ]

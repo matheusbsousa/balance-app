@@ -2,14 +2,19 @@
 import {useCurrencyInput} from "vue-currency-input";
 import {watch} from "vue";
 
-const props = defineProps({ modelValue: Number, label: String });
+type CurrencyInputProps = {
+  modelValue: number | null,
+  label: string
+}
 
-const { inputRef, formattedValue, numberValue, setValue } = useCurrencyInput({
+const props = defineProps<CurrencyInputProps>();
+
+const {inputRef, formattedValue, setValue} = useCurrencyInput({
   currency: 'BRL',
   hideCurrencySymbolOnFocus: false,
   hideGroupingSeparatorOnFocus: false,
   precision: 2,
-  valueRange: {  },
+  valueRange: {},
 });
 
 watch(
@@ -26,7 +31,6 @@ watch(
       v-model="formattedValue"
       ref="inputRef"
       :label="props.label"
-      hide-details="true"
   ></v-text-field>
 </template>
 

@@ -3,6 +3,8 @@ import './style.css'
 import '@fortawesome/fontawesome-free/css/all.css' // Ensure your project is capable of handling css files
 import App from './App.vue'
 
+
+
 // Vuetify
 import 'vuetify/styles'
 import {createVuetify} from 'vuetify'

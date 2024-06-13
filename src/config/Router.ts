@@ -4,6 +4,7 @@ import Home from "../views/home/Home.vue";
 import Entries from "../views/entries/Entries.vue";
 import Limits from "../views/limits/Limits.vue";
 import Categories from "../views/categories/Categories.vue";
+import Spreadsheet from "../views/spreadsheet/Spreadsheet.vue";
 
 export const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,6 +18,11 @@ export const router = createRouter({
             path: '/entries',
             component: Entries,
             name: 'Entries'
+        },
+        {
+            path: '/spreadsheet',
+            component: Spreadsheet,
+            name: 'Spreadsheet'
         },
         {
             path: '/limits',

@@ -58,6 +58,7 @@ getMonthEntries()
 watch(showIgnored, getMonthEntries)
 
 async function getCategories() {
+  console.log(BASE_URL + "/categories")
   await fetch(BASE_URL + "/categories")
       .then(response => response.json())
       .then(data => {
@@ -120,7 +121,7 @@ async function updateEntry() {
         },
         body: JSON.stringify(form.value)
       })
-      .then(response => {
+      .then(() => {
         entryToEdit.value = 0
         getMonthEntries()
         onCloseDialog()
@@ -147,7 +148,7 @@ async function createEntry() {
         },
         body: JSON.stringify(form.value)
       })
-      .then(response => {
+      .then(() => {
         v$.value.$reset()
         getMonthEntries()
         onCloseDialog()
@@ -161,7 +162,7 @@ function deleteEntry() {
   fetch(BASE_URL + `/entries/${entryIdToDelete.value}`, {
     method: 'DELETE'
   })
-      .then(response => {
+      .then(() => {
         deleteEntryDialog.value = false
         getMonthEntries()
       })
