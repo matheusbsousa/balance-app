@@ -1,13 +1,10 @@
 <script setup lang="ts">
 
 import VGrid from "@revolist/vue3-datagrid";
-import Plugin from "@revolist/revogrid-column-date";
-
-import NumberColumnType from '@revolist/revogrid-column-numeral'; // import library
-
 
 import {ref} from "vue";
 import {fetchData} from "../../api/Client.ts";
+import {parse} from "date-fns";
 
 interface Data {
   date: string,
@@ -23,9 +20,6 @@ const columns = [
   {
     prop: "date",
     name: "Date",
-    columnType: "date",
-    direction: 'left',
-    required: 'true',
   },
   {
     prop: "description",
@@ -50,7 +44,7 @@ async function sendEntries() {
       && isNumber(entry.value))
       .map((entry) => {
         return {
-          date: new Date(entry.date).toISOString(),
+          date: parse(entry.date, 'dd/MM/yyyy', new Date().toISOString()),
           description: entry.description,
           value: parseFloat(entry.value).toString()
         }
@@ -81,12 +75,13 @@ async function sendEntries() {
   }
 }
 
-function isDate(date: string): boolean{
-  console.log(date.length > 0 && !isNaN(new Date(date).getTime()))
-  return date.length > 0 && !isNaN(new Date(date).getTime())
+function isDate(date: string): boolean {
+  ;
+  return date.length > 0 && !isNaN(parse(date, 'dd/MM/yyyy', new Date()).getTime())
 }
 
 function isNumber(value: string): boolean {
+  console.log(value)
   console.log(value.length > 0 && !isNaN(parseFloat(value)))
   return value.length > 0 && !isNaN(parseFloat(value))
 }
@@ -117,8 +112,7 @@ function isNumber(value: string): boolean {
               :source="data"
               :columns="columns"
               :useClipboard="true"
-              :columnTypes="{date: new Plugin(), value: new NumberColumnType()}"
-              >
+          >
           </v-grid>
         </div>
       </v-col>
