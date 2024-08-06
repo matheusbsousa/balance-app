@@ -5,6 +5,7 @@ import Entries from "../views/entries/Entries.vue";
 import Limits from "../views/limits/Limits.vue";
 import Categories from "../views/categories/Categories.vue";
 import Spreadsheet from "../views/spreadsheet/Spreadsheet.vue";
+import {BalanceModel} from "../views/balance/model.ts";
 
 export const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,6 +13,9 @@ export const router = createRouter({
         {
             path: '/',
             component: Home,
+            props: {
+                model: new BalanceModel()
+            },
             name: 'Home'
         },
         {
